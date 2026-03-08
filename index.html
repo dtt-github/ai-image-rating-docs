@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Rating API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .code-block { background: #1e293b; border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 14px; }
+        .code-block code { color: #e2e8f0; }
+        .tab-btn.active { border-color: #8b5cf6; color: #c4b5fd; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-violet-500 to-cyan-500 rounded-lg"></div>
+                <span class="text-xl font-bold text-white">AI Image Rating</span>
+            </div>
+            <nav class="flex items-center gap-6 text-sm">
+                <a href="#features" class="text-slate-400 hover:text-white transition">Features</a>
+                <a href="#api" class="text-slate-400 hover:text-white transition">API Reference</a>
+                <a href="#quickstart" class="text-slate-400 hover:text-white transition">Quick Start</a>
+                <a href="#pricing" class="text-slate-400 hover:text-white transition">Pricing</a>
+                <a href="#register" class="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-medium transition">
+                    Request Access
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="max-w-6xl mx-auto px-6 py-24 text-center">
+        <h1 class="text-5xl font-bold text-white mb-6 leading-tight">
+            AI-Powered Image Rating<br>
+            <span class="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                for Model Agencies
+            </span>
+        </h1>
+        <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
+            Evaluate the aesthetic quality of fashion and model photography with a single API call.
+            Get scores, tags, content ratings, and portfolio suitability analysis in seconds.
+        </p>
+        <div class="flex items-center justify-center gap-4">
+            <a href="#register" class="px-8 py-3 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-semibold text-lg transition">
+                Request API Access
+            </a>
+            <a href="#api" class="px-8 py-3 rounded-lg border border-slate-700 hover:border-slate-500 text-slate-300 font-semibold text-lg transition">
+                View Documentation
+            </a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="max-w-6xl mx-auto px-6 py-16">
+        <h2 class="text-3xl font-bold text-white mb-12 text-center">What You Get</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-slate-900 rounded-xl p-6 border border-slate-800">
+                <div class="text-3xl mb-4">&#127912;</div>
+                <h3 class="text-lg font-semibold text-white mb-2">Aesthetic Score</h3>
+                <p class="text-slate-400 text-sm">0-100 score with Low/Medium/High classification trained on 148K+ rated images using CLIP ViT-B/16.</p>
+            </div>
+            <div class="bg-slate-900 rounded-xl p-6 border border-slate-800">
+                <div class="text-3xl mb-4">&#127991;</div>
+                <h3 class="text-lg font-semibold text-white mb-2">Smart Tagging</h3>
+                <p class="text-slate-400 text-sm">7 AI-detected tags per image using Google SigLIP zero-shot classification. Portrait, fashion, outdoor, editorial, and more.</p>
+            </div>
+            <div class="bg-slate-900 rounded-xl p-6 border border-slate-800">
+                <div class="text-3xl mb-4">&#128274;</div>
+                <h3 class="text-lg font-semibold text-white mb-2">Content Safety</h3>
+                <p class="text-slate-400 text-sm">Automatic content classification (Safe/Revealing/Suggestive/NSFW) with portfolio safety flag.</p>
+            </div>
+            <div class="bg-slate-900 rounded-xl p-6 border border-slate-800">
+                <div class="text-3xl mb-4">&#9989;</div>
+                <h3 class="text-lg font-semibold text-white mb-2">Portfolio Gate</h3>
+                <p class="text-slate-400 text-sm">Learned MLP on 19 probe signals detects non-photos, screenshots, unclear faces, and unsuitable images.</p>
+            </div>
+            <div class="bg-slate-900 rounded-xl p-6 border border-slate-800">
+                <div class="text-3xl mb-4">&#128247;</div>
+                <h3 class="text-lg font-semibold text-white mb-2">Quality Analysis</h3>
+                <p class="text-slate-400 text-sm">Resolution, sharpness, and blur detection. Flags low-quality, pixelated, or too-small images automatically.</p>
+            </div>
+            <div class="bg-slate-900 rounded-xl p-6 border border-slate-800">
+                <div class="text-3xl mb-4">&#128444;</div>
+                <h3 class="text-lg font-semibold text-white mb-2">Format Support</h3>
+                <p class="text-slate-400 text-sm">JPEG, PNG, WebP, GIF, and HEIC/HEIF (iPhone). Up to 25 MB per image. Server-side HEIC conversion included.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Reference -->
+    <section id="api" class="max-w-6xl mx-auto px-6 py-16">
+        <h2 class="text-3xl font-bold text-white mb-12 text-center">API Reference</h2>
+
+        <div class="space-y-8">
+            <!-- Auth -->
+            <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-800 flex items-center gap-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-500/20 text-green-400">POST</span>
+                    <code class="text-white font-mono">/api/v1/token</code>
+                    <span class="text-slate-400 text-sm ml-2">Get an access token</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="text-sm text-slate-400 mb-3">Exchange your client credentials for a JWT bearer token (valid 1 hour).</p>
+                    <div class="code-block"><code>curl -X POST https://api.yourserver.com/api/v1/token \
+  -H "Content-Type: application/json" \
+  -d '{"client_id": "agency_...", "client_secret": "sk_..."}'</code></div>
+                </div>
+            </div>
+
+            <!-- Rate upload -->
+            <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-800 flex items-center gap-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-500/20 text-green-400">POST</span>
+                    <code class="text-white font-mono">/api/v1/rate</code>
+                    <span class="text-slate-400 text-sm ml-2">Rate an uploaded image</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="text-sm text-slate-400 mb-3">Upload an image file for aesthetic analysis. Returns score, tags, content rating, quality, and portfolio gate decision.</p>
+                    <div class="code-block"><code>curl -X POST https://api.yourserver.com/api/v1/rate \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -F "file=@photo.jpg"</code></div>
+                </div>
+            </div>
+
+            <!-- Rate URL -->
+            <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-800 flex items-center gap-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-500/20 text-green-400">POST</span>
+                    <code class="text-white font-mono">/api/v1/rate-url</code>
+                    <span class="text-slate-400 text-sm ml-2">Rate an image from URL</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="text-sm text-slate-400 mb-3">Pass a public image URL for analysis. Same response format as file upload.</p>
+                    <div class="code-block"><code>curl -X POST https://api.yourserver.com/api/v1/rate-url \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com/photo.jpg"}'</code></div>
+                </div>
+            </div>
+
+            <!-- Usage -->
+            <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-800 flex items-center gap-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-400">GET</span>
+                    <code class="text-white font-mono">/api/v1/usage</code>
+                    <span class="text-slate-400 text-sm ml-2">Check your quota</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="text-sm text-slate-400 mb-3">Returns your current usage and remaining requests for the day.</p>
+                    <div class="code-block"><code>curl https://api.yourserver.com/api/v1/usage \
+  -H "Authorization: Bearer YOUR_TOKEN"
+
+# Response: {"used": 42, "limit": 1000, "remaining": 958}</code></div>
+                </div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-800 flex items-center gap-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-green-500/20 text-green-400">POST</span>
+                    <code class="text-white font-mono">/api/v1/feedback</code>
+                    <span class="text-slate-400 text-sm ml-2">Submit feedback</span>
+                </div>
+                <div class="px-6 py-4">
+                    <p class="text-sm text-slate-400 mb-3">Help improve the AI by submitting your rating (0-3) for any analyzed image.</p>
+                    <div class="code-block"><code>curl -X POST https://api.yourserver.com/api/v1/feedback \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"image_hash": "a1b2c3...", "user_score": 3}'</code></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <p class="text-slate-400">
+                Full interactive documentation available at
+                <code class="text-violet-400">/api/v1/docs</code> (Swagger UI) and
+                <code class="text-violet-400">/api/v1/redoc</code> (ReDoc) on the API server.
+            </p>
+        </div>
+    </section>
+
+    <!-- Response example -->
+    <section class="max-w-6xl mx-auto px-6 py-16">
+        <h2 class="text-3xl font-bold text-white mb-8 text-center">Example Response</h2>
+        <div class="max-w-3xl mx-auto code-block">
+<code class="text-sm">{
+  "rating": "High",
+  "score": 78.5,
+  "tags": [
+    {"tag": "portrait", "confidence": 0.92},
+    {"tag": "fashion", "confidence": 0.87},
+    {"tag": "studio", "confidence": 0.65}
+  ],
+  "content_rating": {
+    "level": "safe",
+    "detail": "Professional fashion photography",
+    "safe_for_portfolio": true
+  },
+  "quality": {
+    "width": 3000, "height": 4000,
+    "sharpness": 850.2,
+    "issues": [],
+    "is_acceptable": true
+  },
+  "rejected": false,
+  "is_original": true,
+  "portfolio_prob": 0.94,
+  "image_hash": "a1b2c3d4e5f6..."
+}</code>
+        </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section id="quickstart" class="max-w-6xl mx-auto px-6 py-16">
+        <h2 class="text-3xl font-bold text-white mb-12 text-center">Quick Start</h2>
+
+        <!-- Tabs -->
+        <div class="max-w-3xl mx-auto">
+            <div class="flex border-b border-slate-800 mb-6">
+                <button class="tab-btn active px-4 py-2 text-sm font-medium border-b-2 border-transparent -mb-px cursor-pointer" data-tab="python">Python</button>
+                <button class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent -mb-px text-slate-400 cursor-pointer" data-tab="javascript">JavaScript</button>
+                <button class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent -mb-px text-slate-400 cursor-pointer" data-tab="curl">curl</button>
+            </div>
+
+            <div class="tab-content active" id="tab-python">
+                <div class="code-block"><code>import requests
+
+BASE = "https://api.yourserver.com/api/v1"
+
+# 1. Get token
+token_resp = requests.post(f"{BASE}/token", json={
+    "client_id": "agency_abc123def456",
+    "client_secret": "sk_your_secret_here",
+})
+token = token_resp.json()["access_token"]
+headers = {"Authorization": f"Bearer {token}"}
+
+# 2. Rate an image
+with open("photo.jpg", "rb") as f:
+    resp = requests.post(f"{BASE}/rate", headers=headers, files={"file": f})
+
+result = resp.json()
+print(f"Score: {result['score']}, Rating: {result['rating']}")
+print(f"Tags: {[t['tag'] for t in result['tags']]}")
+print(f"Portfolio suitable: {not result['rejected']}")</code></div>
+            </div>
+
+            <div class="tab-content" id="tab-javascript">
+                <div class="code-block"><code>const BASE = "https://api.yourserver.com/api/v1";
+
+// 1. Get token
+const tokenResp = await fetch(`${BASE}/token`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    client_id: "agency_abc123def456",
+    client_secret: "sk_your_secret_here",
+  }),
+});
+const { access_token } = await tokenResp.json();
+
+// 2. Rate an image from URL
+const resp = await fetch(`${BASE}/rate-url`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${access_token}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ url: "https://example.com/photo.jpg" }),
+});
+
+const result = await resp.json();
+console.log(`Score: ${result.score}, Rating: ${result.rating}`);</code></div>
+            </div>
+
+            <div class="tab-content" id="tab-curl">
+                <div class="code-block"><code># 1. Get token
+TOKEN=$(curl -s -X POST https://api.yourserver.com/api/v1/token \
+  -H "Content-Type: application/json" \
+  -d '{"client_id": "agency_...", "client_secret": "sk_..."}' \
+  | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+
+# 2. Rate an image file
+curl -X POST https://api.yourserver.com/api/v1/rate \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "file=@photo.jpg"
+
+# 3. Rate an image from URL
+curl -X POST https://api.yourserver.com/api/v1/rate-url \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com/photo.jpg"}'
+
+# 4. Check usage
+curl https://api.yourserver.com/api/v1/usage \
+  -H "Authorization: Bearer $TOKEN"</code></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="max-w-6xl mx-auto px-6 py-16">
+        <h2 class="text-3xl font-bold text-white mb-12 text-center">Simple Pricing</h2>
+        <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <div class="bg-slate-900 rounded-xl p-8 border border-slate-800">
+                <h3 class="text-xl font-bold text-white mb-2">Starter</h3>
+                <div class="text-3xl font-bold text-violet-400 mb-4">Free</div>
+                <ul class="space-y-3 text-sm text-slate-400 mb-6">
+                    <li>1,000 requests / day</li>
+                    <li>All endpoints included</li>
+                    <li>OAuth2 authentication</li>
+                    <li>Interactive API docs</li>
+                    <li>Community support</li>
+                </ul>
+                <a href="#register" class="block text-center px-6 py-2 rounded-lg border border-slate-700 hover:border-violet-500 text-slate-300 font-medium transition">
+                    Request Access
+                </a>
+            </div>
+            <div class="bg-slate-900 rounded-xl p-8 border border-violet-500/50">
+                <h3 class="text-xl font-bold text-white mb-2">Enterprise</h3>
+                <div class="text-3xl font-bold text-violet-400 mb-4">Custom</div>
+                <ul class="space-y-3 text-sm text-slate-400 mb-6">
+                    <li>Unlimited requests</li>
+                    <li>Custom rate limits</li>
+                    <li>Priority GPU workers</li>
+                    <li>Per-agency AI training</li>
+                    <li>Dedicated support</li>
+                </ul>
+                <a href="mailto:contact@yourcompany.com" class="block text-center px-6 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-medium transition">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section id="register" class="max-w-6xl mx-auto px-6 py-16">
+        <h2 class="text-3xl font-bold text-white mb-4 text-center">Request API Access</h2>
+        <p class="text-slate-400 text-center mb-10 max-w-lg mx-auto">
+            Fill out the form below and we'll review your application. You'll receive your API credentials once approved.
+        </p>
+
+        <div class="max-w-md mx-auto">
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Company Name *</label>
+                    <input type="text" name="company_name" required
+                           class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white
+                                  focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                           placeholder="Acme Models Inc.">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Email *</label>
+                    <input type="email" name="email" required
+                           class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white
+                                  focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                           placeholder="api@yourcompany.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Website</label>
+                    <input type="url" name="website"
+                           class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white
+                                  focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                           placeholder="https://yourcompany.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">How will you use the API?</label>
+                    <textarea name="use_case" rows="3"
+                              class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white
+                                     focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500 resize-none"
+                              placeholder="We manage 500+ models and want to automate portfolio screening..."></textarea>
+                </div>
+                <button type="submit" id="submitBtn"
+                        class="w-full px-6 py-3 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-semibold
+                               transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                    Submit Application
+                </button>
+            </form>
+
+            <div id="formResult" class="hidden mt-4 p-4 rounded-lg text-sm"></div>
+
+            <!-- Check status -->
+            <div class="mt-8 pt-6 border-t border-slate-800">
+                <p class="text-sm text-slate-400 mb-3">Already applied? Check your status:</p>
+                <form id="statusForm" class="flex gap-2">
+                    <input type="email" name="email" required placeholder="Your email"
+                           class="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white text-sm
+                                  focus:border-violet-500 focus:outline-none">
+                    <button type="submit"
+                            class="px-4 py-2 rounded-lg border border-slate-700 hover:border-slate-500 text-slate-300
+                                   text-sm font-medium transition cursor-pointer">
+                        Check
+                    </button>
+                </form>
+                <div id="statusResult" class="hidden mt-3 p-3 rounded-lg text-sm"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 mt-16">
+        <div class="max-w-6xl mx-auto px-6 py-8 text-center text-sm text-slate-500">
+            AI Image Rating API &mdash; Built with CLIP ViT-B/16 + Google SigLIP
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Registration form
+        const API_BASE = window.API_BASE || '';
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const result = document.getElementById('formResult');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+            result.className = 'hidden';
+
+            const form = new FormData(e.target);
+            const data = {
+                company_name: form.get('company_name'),
+                email: form.get('email'),
+                website: form.get('website') || null,
+                use_case: form.get('use_case') || null,
+            };
+
+            try {
+                const resp = await fetch(API_BASE + '/api/v1/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                const json = await resp.json();
+
+                result.className = resp.ok
+                    ? 'mt-4 p-4 rounded-lg text-sm bg-green-500/10 border border-green-500/30 text-green-400'
+                    : 'mt-4 p-4 rounded-lg text-sm bg-red-500/10 border border-red-500/30 text-red-400';
+                result.textContent = json.message || json.detail || 'Something went wrong';
+            } catch (err) {
+                result.className = 'mt-4 p-4 rounded-lg text-sm bg-red-500/10 border border-red-500/30 text-red-400';
+                result.textContent = 'Network error. Please try again.';
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Submit Application';
+        });
+
+        // Status check
+        document.getElementById('statusForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const result = document.getElementById('statusResult');
+            const email = new FormData(e.target).get('email');
+
+            try {
+                const resp = await fetch(API_BASE + `/api/v1/register/status?email=${encodeURIComponent(email)}`);
+                const json = await resp.json();
+
+                if (resp.ok) {
+                    const colors = {
+                        pending: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400',
+                        approved: 'bg-green-500/10 border-green-500/30 text-green-400',
+                        rejected: 'bg-red-500/10 border-red-500/30 text-red-400',
+                    };
+                    result.className = `mt-3 p-3 rounded-lg text-sm border ${colors[json.status] || ''}`;
+                    result.textContent = `Status: ${json.status} (${json.company_name})`;
+                } else {
+                    result.className = 'mt-3 p-3 rounded-lg text-sm bg-slate-800 border border-slate-700 text-slate-400';
+                    result.textContent = json.detail || 'Not found';
+                }
+            } catch {
+                result.className = 'mt-3 p-3 rounded-lg text-sm bg-red-500/10 border border-red-500/30 text-red-400';
+                result.textContent = 'Network error';
+            }
+        });
+    </script>
+</body>
+</html>
