@@ -157,7 +157,7 @@
                     <span class="text-zinc-500 text-xs sm:text-sm">Authenticate and get a bearer token</span>
                 </div>
                 <div class="px-5 py-4 border-t border-zinc-800/50">
-                    <div class="code-block"><code>curl -X POST http://ai-image-rating.digitaltwin.technology/api/v1/token \
+                    <div class="code-block"><code>curl -X POST https://ai-image-rating.digitaltwin.technology/api/v1/token \
   -H "Content-Type: application/json" \
   -d '{"client_id": "agency_...", "client_secret": "sk_..."}'</code></div>
                 </div>
@@ -171,7 +171,7 @@
                 </div>
                 <div class="px-5 py-4 border-t border-zinc-800/50">
                     <p class="text-xs text-zinc-500 mb-3">Multipart file upload. Returns score, tags, content rating, quality, and portfolio gate decision.</p>
-                    <div class="code-block"><code>curl -X POST http://ai-image-rating.digitaltwin.technology/api/v1/rate \
+                    <div class="code-block"><code>curl -X POST https://ai-image-rating.digitaltwin.technology/api/v1/rate \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -F "file=@photo.jpg"</code></div>
                 </div>
@@ -184,7 +184,7 @@
                     <span class="text-zinc-500 text-xs sm:text-sm">Rate an image from URL</span>
                 </div>
                 <div class="px-5 py-4 border-t border-zinc-800/50">
-                    <div class="code-block"><code>curl -X POST http://ai-image-rating.digitaltwin.technology/api/v1/rate-url \
+                    <div class="code-block"><code>curl -X POST https://ai-image-rating.digitaltwin.technology/api/v1/rate-url \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"url": "https://example.com/photo.jpg"}'</code></div>
@@ -198,7 +198,7 @@
                     <span class="text-zinc-500 text-xs sm:text-sm">Check your remaining quota</span>
                 </div>
                 <div class="px-5 py-4 border-t border-zinc-800/50">
-                    <div class="code-block"><code>curl http://ai-image-rating.digitaltwin.technology/api/v1/usage \
+                    <div class="code-block"><code>curl https://ai-image-rating.digitaltwin.technology/api/v1/usage \
   -H "Authorization: Bearer YOUR_TOKEN"
 
 # {"used": 42, "limit": 1000, "remaining": 958}</code></div>
@@ -212,7 +212,7 @@
                     <span class="text-zinc-500 text-xs sm:text-sm">Submit your rating to improve the AI</span>
                 </div>
                 <div class="px-5 py-4 border-t border-zinc-800/50">
-                    <div class="code-block"><code>curl -X POST http://ai-image-rating.digitaltwin.technology/api/v1/feedback \
+                    <div class="code-block"><code>curl -X POST https://ai-image-rating.digitaltwin.technology/api/v1/feedback \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"image_hash": "a1b2c3...", "user_score": 3}'</code></div>
@@ -275,7 +275,7 @@
             <div class="tab-content active" id="tab-python">
                 <div class="code-block rounded-t-none border-t-0"><code>import requests
 
-BASE = "http://ai-image-rating.digitaltwin.technology/api/v1"
+BASE = "https://ai-image-rating.digitaltwin.technology/api/v1"
 
 # 1. Get token
 token_resp = requests.post(f"{BASE}/token", json={
@@ -296,7 +296,7 @@ print(f"Portfolio suitable: {not result['rejected']}")</code></div>
             </div>
 
             <div class="tab-content" id="tab-javascript">
-                <div class="code-block rounded-t-none border-t-0"><code>const BASE = "http://ai-image-rating.digitaltwin.technology/api/v1";
+                <div class="code-block rounded-t-none border-t-0"><code>const BASE = "https://ai-image-rating.digitaltwin.technology/api/v1";
 
 // 1. Get token
 const tokenResp = await fetch(`${BASE}/token`, {
@@ -325,24 +325,24 @@ console.log(`Score: ${result.score}, Rating: ${result.rating}`);</code></div>
 
             <div class="tab-content" id="tab-curl">
                 <div class="code-block rounded-t-none border-t-0"><code># 1. Get token
-TOKEN=$(curl -s -X POST http://ai-image-rating.digitaltwin.technology/api/v1/token \
+TOKEN=$(curl -s -X POST https://ai-image-rating.digitaltwin.technology/api/v1/token \
   -H "Content-Type: application/json" \
   -d '{"client_id": "agency_...", "client_secret": "sk_..."}' \
   | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
 
 # 2. Rate an image file
-curl -X POST http://ai-image-rating.digitaltwin.technology/api/v1/rate \
+curl -X POST https://ai-image-rating.digitaltwin.technology/api/v1/rate \
   -H "Authorization: Bearer $TOKEN" \
   -F "file=@photo.jpg"
 
 # 3. Rate from URL
-curl -X POST http://ai-image-rating.digitaltwin.technology/api/v1/rate-url \
+curl -X POST https://ai-image-rating.digitaltwin.technology/api/v1/rate-url \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"url": "https://example.com/photo.jpg"}'
 
 # 4. Check usage
-curl http://ai-image-rating.digitaltwin.technology/api/v1/usage \
+curl https://ai-image-rating.digitaltwin.technology/api/v1/usage \
   -H "Authorization: Bearer $TOKEN"</code></div>
             </div>
         </div>
@@ -474,7 +474,7 @@ curl http://ai-image-rating.digitaltwin.technology/api/v1/usage \
     });
 
     // Registration form
-    const API_BASE = window.API_BASE || 'http://ai-image-rating.digitaltwin.technology';
+    const API_BASE = window.API_BASE || 'https://ai-image-rating.digitaltwin.technology';
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
